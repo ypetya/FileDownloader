@@ -128,21 +128,33 @@ public class DownloaderPanel extends JPanel {
 		}
 
 		private String makeAbsolute(String url, String link) {
+			// we have absolute link its ok
 			if (link.matches("http://.*")) {
 				return link;
 			}
+			
+			// if url has a handler on the end of it, we remove it
+			// e.g: http://akarmi.hu/valami.html -> http://akarmi.hu/
+			
+			url = url.replaceFirst("[/]([a-zA-Z]+\\.[a-zA-Z]+)$", "/");
+			
+			// url\n + /link
 			if (link.matches("/.*") && url.matches(".*$[^/]")) {
-				return url + "/" + link;
+				return url + link;
 			}
+			// url + / + link
 			if (link.matches("[^/].*") && url.matches(".*[^/]")) {
 				return url + "/" + link;
 			}
+			// url/ + link 
 			if (link.matches("[^/].*") && url.matches(".*[/]")) {
 				return url + link;
 			}
+			// url/ + /link
 			if (link.matches("/.*") && url.matches(".*[/]")) {
 				return url + link;
 			}
+			// url + /link
 			if (link.matches("/.*") && url.matches(".*[^/]")) {
 				return url + link;
 			}
